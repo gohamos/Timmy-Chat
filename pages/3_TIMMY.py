@@ -42,8 +42,14 @@ with st.chat_message("assistant"):
     else:    
         st.write(">> Loading Database......")    
         from logics.test_agent import response
-        st.write("Hello, how may I help you today?") 
-        issetup=1        
+        from logics.test_agent import databasesize
+        if databasesize()>0:
+            st.write("Hello, how may I help you today?") 
+            issetup=1        
+        else:
+            st.write("ERROR! Unable to load Database.")
+            exit()
+            
  
 # React to user input
 if issetup> 0:
@@ -60,7 +66,13 @@ if issetup> 0:
         with st.status("Checking Database..."):
             st.write("Searching for data")
             answer = response(prompt,printdebug=printdebug)
-            st.write("Data Found!")
+            if "!!" in answer:
+                answer = answer.replace("!!","")
+                st.write("Error in Search!")
+            else:
+                st.write("Data Found!")
+                
+                
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
             st.write(f"{answer[0]}")

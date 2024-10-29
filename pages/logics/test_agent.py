@@ -253,19 +253,22 @@ def PrintResult(prompt, corrected,relevant,result):
     print(flush = True)
 
 
-
+def databasesize():
+    return len(toollist)
+    
+    
 def response(prompt,printdebug=0):
     print()
     result1=""
     is_relevant=""
     clean_prompt=""
     if len(toollist)==0:
-        result1="Sorry, no Data loaded in Database!"
+        result1="!!Sorry, no Data loaded in Database!"
     else:
         clean_prompt=helper_cleanupquery(prompt,printdebug=printdebug)
         is_relevant  =helper_checkrelevance(clean_prompt,printdebug=printdebug)
         if "NO" in is_relevant:
-            result1="Please provide a query related to traffic incidents or road conditions in Singapore."
+            result1="!!Please provide a query related to traffic incidents or road conditions in Singapore."
         else:            
             system_user_message = f"""You have access to a number of pandas dataframes. These pandas dataframes contain the traffic incident records from Land Transport Authority. \
             the datafranes uses columns with descriptions delimited by the following json enclosed in <column> enclosed tags:
