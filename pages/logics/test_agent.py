@@ -34,24 +34,59 @@ filterCols=["UP_POINT","DN_POINT","UP_LINK_ID","DN_LINK_ID","START_X_COOR","STAR
 
 
 filelist = []
-loadingorder=["outmerge_pkl","outpickle","output"]
-for path in loadingorder:
-    if "http" in path:
-        filelist = loadfiles(url=path,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)        
-    else:
-        filelist = loadfiles(dir=path,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)
-    if len(filelist)>0:
-       break;
-       
-       
-
-
 DictMap = dict()
 EwayDict = dict()
-for path in loadingorder:
-   DictMap ,EwayDict =loadLookup(dir=path,printdebug=1,subdir=1)
-   if len(DictMap)>0:
-       break;
+
+ONLINE_DATA_TABLES=os.getenv('ONLINE_DATA_TABLES')
+if len(ONLINE_DATA_TABLES)==0: 
+    try:
+        import streamlit as st
+        ONLINE_DATA_TABLES= st.secrets['ONLINE_DATA_TABLES']
+        print("[] Loaded secrets ONLINE_DATA_TABLES")
+    except:
+        print("[] Cannot find  ONLINE_DATA_TABLES")
+        
+else:    
+    print("[] Loaded env ONLINE_DATA_TABLES")
+DataList=[]
+if len(ONLINE_DATA_TABLES)>0:
+    DataList=ONLINE_DATA_TABLES.split(",")
+
+print("[] Loading Data", flush=True)
+if len(DataList)==0: 
+    loadingorder=["outmerge_pkl","outpickle","output"]
+    for path in loadingorder:
+        filelist = loadfiles(dir=path,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)
+        if len(filelist)>0:
+           break;
+else:
+    filelist = loadfiles(filelist=DataList,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)   
+
+ONLINE_LOOKUP_TABLES=os.getenv('ONLINE_LOOKUP_TABLES')
+if len(ONLINE_LOOKUP_TABLES)==0: 
+    try:
+        import streamlit as st
+        ONLINE_LOOKUP_TABLES= st.secrets['ONLINE_LOOKUP_TABLES']
+        print("[] Loaded secrets ONLINE_LOOKUP_TABLES")
+    except:
+        print("[] Cannot find  ONLINE_LOOKUP_TABLES")
+        
+else:    
+    print("[] Loaded env ONLINE_LOOKUP_TABLES")
+
+
+print("[] Loading Lookup", flush=True)
+LookupList=[]
+if len(ONLINE_LOOKUP_TABLES)>0:
+    LookupList=ONLINE_LOOKUP_TABLES.split(",")
+
+if len(LookupList)>0:
+    DictMap ,EwayDict =loadLookup(filelist=LookupList,printdebug=1,subdir=0)
+else:
+    for path in loadingorder:
+       DictMap ,EwayDict =loadLookup(dir=path,printdebug=1,subdir=1)
+       if len(DictMap)>0:
+           break;
     
 
 print(len(filelist))
@@ -65,11 +100,10 @@ toollist = []
 histlist = []
 exlist = []
 for file in filelist:
-    if "HIST" in file:
-        histlist.append(filelist[file])
-    elif "EXPRESSWAY" in file:
+    if "EXPRESSWAY" in file:
         exlist.append(filelist[file])
-        
+    else:
+        histlist.append(filelist[file])
         
         
 print("pandas_ir_agent:",len(histlist))
@@ -291,8 +325,8 @@ def response(prompt,printdebug=0):
                 verbose = True
                 print("[] Calling crew",flush = True)
             result1 = run_crew_0(system_user_message,verbose=verbose,datatools=toollist,printdebug=printdebug,llm=llm)
-            if printdebug>0:
-                PrintResult(prompt,clean_prompt,is_relevant,result1)
+    if printdebug>0:
+        PrintResult(prompt,clean_prompt,is_relevant,result1)
 
     return result1, clean_prompt, is_relevant
 

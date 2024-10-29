@@ -44,94 +44,104 @@ def getDirList(dir="",subdir=1):
     return dirlist;
 
 
-def loadLookup(dir="",subdir=1, filtercols=[], filtertime=1, formattime=0, printdebug=0,reparse=1, removeinvalid=1):
-    if len(dir)==0:
-        # Change the working directory to the current file's directory
-        dir = os.path.dirname(os.path.abspath(__file__))
+def ReparsePath(path):
+    path = path.replace("\n","")
+    path = path.replace("\r","")
+    if "https://drive.google.com/file/d" in path:
+        path = 'https://drive.google.com/uc?export=download&id='+path.split('/')[-2]
+    return path
+
+def loadLookup(dir="",filelist=[],subdir=1, filtercols=[], filtertime=1, formattime=0, printdebug=0,reparse=1, removeinvalid=1):
+   
     if printdebug>0: print(f"loadLookup():: The current working directory is: {dir}")
-    
-    #01/08/2024 9:59
-    dirlist = getDirList(dir=dir,subdir=subdir)
-
-                
-
     DictMap = dict()
     EwayDict = dict()
-    for searchdir in dirlist:
-        if os.path.isdir(searchdir):
-            if printdebug>0: print("[]in folder",searchdir)
-            for file in os.listdir(searchdir):
-                filelower=file.lower()
-                fullpath = searchdir+"/"+file
-                fullpathlower = fullpath.lower()
-                if ".csv" in file:
-                    try:
-                        if "lookup" in fullpathlower:
-                            if "ir" in filelower:
-                                if printdebug>0: print("\t..reading definition file: ",fullpath)
-                                df_file = pd.read_csv(searchdir+"/"+file)
-                                lookupname = ""
-                                lookupkey = ""
-                                lookupvalue=""
-                                if len(df_file.keys())<=3:
-                                    #Reading of Value Lookup Sheets
-                                    for key in df_file:
-                                        #print(key)
-                                        if "_ID" in key:
-                                            lookupkey = key;
-                                            lookupname = lookupkey.replace("_ID","");
-                                        if "_DESC" in key:
-                                            lookupvalue = key;
-                                    print("\t\t >> name:",lookupname)
-                                    print("\t\t >> key:",lookupkey)
-                                    print("\t\t >> value:",lookupvalue)
-                                    DictMap[lookupname] = dict()
-                                    for idx,row in df_file.iterrows():
-                                        if lookupkey in row and lookupvalue in row :# Skip header row
-                                            deffirst = (str)(row[lookupkey])
-                                            defsecond = (row[lookupvalue])
-                                            if "removed" not in defsecond:
-                                                DictMap[lookupname][deffirst] = defsecond
-                                    print("dictmap")
-                                    print(DictMap[lookupname])
-                                else:
-                                    #Reading of Expressway Direction Lookup values
-                                    if "DIR" in file:
-                                        for idx,row in df_file.iterrows():
-                                            tEntry = EwayEntry()
-                                            tEntry.fromRow(row)
-                                            #print (tEntry)
-                                            if tEntry.code>0:
-                                                if tEntry.code in EwayDict:
-                                                    EwayDict[tEntry.code].dir.update(tEntry.dir)
-                                                else:
-                                                    EwayDict[tEntry.code] = tEntry       
-                                    else:
-                                        if printdebug>0: print("\t\t >> skip",len(df_file.keys()))
-                    except:
-                        if printdebug>0: print("\t!! cannot read file: ",fullpath)
+    
+    if len(dir)==0 and len(filelist)==0:
+        # Change the working directory to the current file's directory
+        dir = os.path.dirname(os.path.abspath(__file__))
+    #01/08/2024 9:59
+    if os.path.isdir(dir):
+        dirlist = getDirList(dir=dir,subdir=subdir)               
+        if printdebug>0: print(f"loadLookup():: The current working directory is: {dir}")
+        for searchdir in dirlist:
+            if os.path.isdir(searchdir):
+                if printdebug>0: print("[]in folder",searchdir)
+                for file in os.listdir(searchdir):
+                    filelower=file.lower()
+                    fullpath = searchdir+"/"+file
+                    fullpathlower = fullpath.lower()
+                    if ".csv" in file:
+                            if "lookup" in fullpathlower:
+                                if "ir" in filelower:
+                                    filelist.append(fullpath)
+                                
+                       
+    for fullpath in filelist:         
+        try:
+            fullpath = ReparsePath(fullpath)
+            if len(fullpath)==0: continue;
+            if printdebug>0: print("\t..reading definition file: ",fullpath)
+            
+            df_file = pd.read_csv(fullpath)
+            lookupname = ""
+            lookupkey = ""
+            lookupvalue=""
+            if len(df_file.keys())<=3:
+                #Reading of Value Lookup Sheets
+                for key in df_file:
+                    #print(key)
+                    if "_ID" in key:
+                        lookupkey = key;
+                        lookupname = lookupkey.replace("_ID","");
+                    if "_DESC" in key:
+                        lookupvalue = key;
+                if printdebug>0: 
+                    print("\t\t >> name:",lookupname)
+                    print("\t\t >> key:",lookupkey)
+                    print("\t\t >> value:",lookupvalue)
+                DictMap[lookupname] = dict()
+                for idx,row in df_file.iterrows():
+                    if lookupkey in row and lookupvalue in row :# Skip header row
+                        deffirst = (str)(row[lookupkey])
+                        defsecond = (row[lookupvalue])
+                        if "removed" not in defsecond:
+                            DictMap[lookupname][deffirst] = defsecond
+                if printdebug>0: 
+                    print("\t<"+lookupname+"> dictmap:",DictMap[lookupname])
+            else:
+                #Reading of Expressway Direction Lookup values
+                if "DIR" in fullpath:
+                    for idx,row in df_file.iterrows():
+                        tEntry = EwayEntry()
+                        tEntry.fromRow(row)
+                        #print (tEntry)
+                        if tEntry.code>0:
+                            if tEntry.code in EwayDict:
+                                EwayDict[tEntry.code].dir.update(tEntry.dir)
+                            else:
+                                EwayDict[tEntry.code] = tEntry       
+                else:
+                    if printdebug>0: print("\t\t >> skip",len(df_file.keys()))
+        except:
+            if printdebug>0: print("\t!! cannot read file: ",fullpath)
     return DictMap,EwayDict;
                                         
     
 
-def loadfiles(dir="",subdir=1, filtercols=[], filtertime=0, formattime=0, printdebug=0,reparse=1, removeinvalid=1,url=""):
+def loadfiles(dir="",filelist=[],subdir=1, filtercols=[], filtertime=0, formattime=0, printdebug=0,reparse=1, removeinvalid=1):
     dtfilter = dtparse.parse("1/1/2000")
     lst_df_all = dict()
     DictMap = dict()
     EwayDict = dict()
     
     
-    if len(url)>0:
-        ## TODO
-        return lst_df_all;
-    else:
-        if len(dir)==0:
-            # Change the working directory to the current file's directory
-            dir = os.path.dirname(os.path.abspath(__file__))
+    if len(dir)==0 and len(filelist)==0:
+        # Change the working directory to the current file's directory
+        dir = os.path.dirname(os.path.abspath(__file__))
             
             
     
-    filelist=[]
     if os.path.isdir(dir):
         if printdebug>0: print(f"loadfiles():: The current working directory is: {dir}")        
         dirlist = getDirList(dir=dir,subdir=subdir)        
@@ -145,7 +155,7 @@ def loadfiles(dir="",subdir=1, filtercols=[], filtertime=0, formattime=0, printd
     elif os.path.isfile(dir):
         if printdebug>0: print(f"loadfiles():: current path is file: {dir}")        
         filelist=[file]        
-    else:
+    elif len(filelist)==0:
         if printdebug>0: print("!! Cannot find directory",dir)
         return lst_df_all;
     
@@ -153,14 +163,16 @@ def loadfiles(dir="",subdir=1, filtercols=[], filtertime=0, formattime=0, printd
             
     for file in filelist:
         fullpathlower = file.lower()        
-        if "lookup" not in fullpathlower:
+        if "http" in fullpathlower or "lookup" not in fullpathlower:
             try:
-                if ".csv" in fullpathlower:
+                file = ReparsePath(file)
+                if len(file)==0: continue;
+                if "http" in fullpathlower or  ".csv" in fullpathlower:
                     # Reading of Data Sheets
                     if printdebug>0: print("\t..reading data file: ",file)
-                    headercols = pd.read_csv(file, index_col=0, nrows=0).columns.tolist()
+                    headercols = pd.read_csv(ReparsePath(file), index_col=0, nrows=0).columns.tolist()
                     headercols = [k for k in headercols if 'TIME' in k]
-                    df_file = pd.read_csv(file,parse_dates=headercols,date_format='%d/%m/%Y %H:%M')
+                    df_file = pd.read_csv(ReparsePath(file),parse_dates=headercols,date_format='%d/%m/%Y %H:%M')
                     if printdebug>1:  print(df_file.info(), flush = True)
                     lst_df_all[file]=df_file
                 if ".pkl" in fullpathlower:
