@@ -1,6 +1,21 @@
+# Set up and run this Streamlit App
 import streamlit as st
 
-st.title("🎈 My new app")
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+
+st.set_page_config(
+    page_title="Hello",
+    page_icon="👋",
 )
+
+st.write("# Welcome to Project TIMMY 👋")
+
+st.sidebar.success("Page selection above ")
+
+st.markdown(
+    """
+    Project TIMMY (Transport Incident Master Made for You) is a chatbot created to help the LTA ITSSD Team to query and gain insights from the incident reports database.
+
+    If there are any bugs or issues please contact us at: brandon_ooi@lta.gov.sg
+"""
+)
+

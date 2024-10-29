@@ -1,5 +1,13 @@
 .streamlit/secrets.toml
 
+*.csv
+*.pkl
+__pycache__
+pages/logics/.env
+env
+*/.env
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
