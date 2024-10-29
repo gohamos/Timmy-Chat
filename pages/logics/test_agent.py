@@ -13,14 +13,14 @@ from crewai import Agent, Task, Crew
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 print(f"The current working directory is: {os.getcwd()}")
 
-from .load_llm import getLLM
-from .load_llm import getClient
-from .crews import run_crew_0
-from .load_data import loadfiles
-from .load_data import loadLookup
-from .load_data import mergingRecords
-from .load_data import printMeta
-from .load_data import convertRecordstoDocList
+from load_llm import getLLM
+from load_llm import getClient
+from crews import run_crew_0
+from load_data import loadfiles
+from load_data import loadLookup
+from load_data import mergingRecords
+from load_data import printMeta
+from load_data import convertRecordstoDocList
 
 from helpers import get_completion_by_messages
 
