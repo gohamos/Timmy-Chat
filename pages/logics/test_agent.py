@@ -258,35 +258,38 @@ def response(prompt,printdebug=0):
     print()
     result1=""
     is_relevant=""
-    printdebug 
-    clean_prompt=helper_cleanupquery(prompt,printdebug=printdebug)
-    is_relevant  =helper_checkrelevance(clean_prompt,printdebug=printdebug)
-    if "NO" in is_relevant:
-        result1="Please provide a query related to traffic incidents or road conditions in Singapore."
-    else:            
-        system_user_message = f"""You have access to a number of pandas dataframes. These pandas dataframes contain the traffic incident records from Land Transport Authority. \
-        the datafranes uses columns with descriptions delimited by the following json enclosed in <column> enclosed tags:
-        <columns>{columns_description}</columns>    
+    clean_prompt=""
+    if len(toollist)==0:
+        result1="Sorry, no Data loaded in Database!"
+    else:
+        clean_prompt=helper_cleanupquery(prompt,printdebug=printdebug)
+        is_relevant  =helper_checkrelevance(clean_prompt,printdebug=printdebug)
+        if "NO" in is_relevant:
+            result1="Please provide a query related to traffic incidents or road conditions in Singapore."
+        else:            
+            system_user_message = f"""You have access to a number of pandas dataframes. These pandas dataframes contain the traffic incident records from Land Transport Authority. \
+            the datafranes uses columns with descriptions delimited by the following json enclosed in <column> enclosed tags:
+            <columns>{columns_description}</columns>    
 
-        All Date and Time based data queries and responses MUST be in Day/Month/Year hours:minutes format
-        Use the DATE(START_TIME) as the reference point for Date and Time queries.
+            All Date and Time based data queries and responses MUST be in Day/Month/Year hours:minutes format
+            Use the DATE(START_TIME) as the reference point for Date and Time queries.
 
-        Understand the question delimited by a pair of <text> enclosed and search the dataframes for relevant data within the provided context and give an accurate answer.
-        Understand whether the question delimited by a pair of <text> enclosed is referring to all incidents or a specific type of incident. If it is a specific type of incident, please filter for that type of incident. Capitalize the first letter and leave the rest lowercase, example: "Apple", "Pear".
-        Understand if the question delimited by a pair of <text> enclosed is referring to a particular road name and filter for that road name if it is required.
-        Understand if the question delimited by a pair of <text> enclosed is referring to a particular time range and filter for the full time duration. (e.g. Days should filtered by 0:00 to 23:59 of that particular day, Months and Years should be 0:00 of the first day and 23:59 of the last day.)
-        Use all the filters together using code if necessary.
-        Don't assume you have access to any libraries other than built-in Python ones and pandas. \
-        Make sure to refer only to the dataframes mentioned above. 
+            Understand the question delimited by a pair of <text> enclosed and search the dataframes for relevant data within the provided context and give an accurate answer.
+            Understand whether the question delimited by a pair of <text> enclosed is referring to all incidents or a specific type of incident. If it is a specific type of incident, please filter for that type of incident. Capitalize the first letter and leave the rest lowercase, example: "Apple", "Pear".
+            Understand if the question delimited by a pair of <text> enclosed is referring to a particular road name and filter for that road name if it is required.
+            Understand if the question delimited by a pair of <text> enclosed is referring to a particular time range and filter for the full time duration. (e.g. Days should filtered by 0:00 to 23:59 of that particular day, Months and Years should be 0:00 of the first day and 23:59 of the last day.)
+            Use all the filters together using code if necessary.
+            Don't assume you have access to any libraries other than built-in Python ones and pandas. \
+            Make sure to refer only to the dataframes mentioned above. 
 
-        Question: <text>{clean_prompt}</text>"""
-        verbose=False
-        if printdebug>0:
-            verbose = True
-            print("[] Calling crew",flush = True)
-        result1 = run_crew_0(system_user_message,verbose=verbose,datatools=toollist,printdebug=printdebug,llm=llm)
-        if printdebug>0:
-            PrintResult(prompt,clean_prompt,is_relevant,result1)
+            Question: <text>{clean_prompt}</text>"""
+            verbose=False
+            if printdebug>0:
+                verbose = True
+                print("[] Calling crew",flush = True)
+            result1 = run_crew_0(system_user_message,verbose=verbose,datatools=toollist,printdebug=printdebug,llm=llm)
+            if printdebug>0:
+                PrintResult(prompt,clean_prompt,is_relevant,result1)
 
     return result1, clean_prompt, is_relevant
 
