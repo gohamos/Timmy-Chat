@@ -61,14 +61,14 @@ if llm is None:
     elif len(OPENAI_API_KEY)==0:
         print(" !! ERROR, OPEN AI_KEY_Not Specified!")
     else:
-        print(f'OPENAI_API_KEY    = {OPENAI_API_KEY}')
-        print(f'OPENAI_MODEL_NAME = {OPENAI_MODEL_NAME}')
+        #print(f'OPENAI_API_KEY    = {OPENAI_API_KEY}')
+        #print(f'OPENAI_MODEL_NAME = {OPENAI_MODEL_NAME}')
         client = OpenAI(api_key=OPENAI_API_KEY)
         print("[] OpenAI Client Opened ",client)
         if (OPENAI_BASE_URL) is None or len(OPENAI_BASE_URL)==0:
             llm=ChatOpenAI(temperature=0, openai_api_key=OPENAI_API_KEY, model_name=OPENAI_MODEL_NAME)
         else:
-            print(f'OPENAI_BASE_URL = {OPENAI_BASE_URL}')
+            #print(f'OPENAI_BASE_URL = {OPENAI_BASE_URL}')
             llm=ChatOpenAI(temperature=0, openai_api_key=OPENAI_API_KEY, model_name=OPENAI_MODEL_NAME, base_url=OPENAI_BASE_URL)
             
         print("[] LLM  Client Opened ",llm)

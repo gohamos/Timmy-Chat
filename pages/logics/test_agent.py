@@ -56,11 +56,11 @@ print("[] Loading Data", flush=True)
 if len(DataList)==0: 
     loadingorder=["outmerge_pkl","outpickle","output"]
     for path in loadingorder:
-        filelist = loadfiles(dir=path,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)
+        filelist = loadfiles(dir=path,printdebug=0,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)
         if len(filelist)>0:
            break;
 else:
-    filelist = loadfiles(filelist=DataList,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)   
+    filelist = loadfiles(filelist=DataList,printdebug=0,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)   
 
 ONLINE_LOOKUP_TABLES=os.getenv('ONLINE_LOOKUP_TABLES')
 if len(ONLINE_LOOKUP_TABLES)==0: 
@@ -81,10 +81,10 @@ if len(ONLINE_LOOKUP_TABLES)>0:
     LookupList=ONLINE_LOOKUP_TABLES.split(",")
 
 if len(LookupList)>0:
-    DictMap ,EwayDict =loadLookup(filelist=LookupList,printdebug=1,subdir=0)
+    DictMap ,EwayDict =loadLookup(filelist=LookupList,printdebug=0,subdir=0)
 else:
     for path in loadingorder:
-       DictMap ,EwayDict =loadLookup(dir=path,printdebug=1,subdir=1)
+       DictMap ,EwayDict =loadLookup(dir=path,printdebug=0,subdir=1)
        if len(DictMap)>0:
            break;
     
