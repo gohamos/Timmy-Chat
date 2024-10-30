@@ -68,7 +68,6 @@ if issetup> 0:
             st.write("Searching for data")
             answer = response(prompt,printdebug=printdebug)
             if "!!" in answer[0]:
-                answer[0] = answer[0].replace("!!","")
                 st.write("Error in Search!")
             else:
                 st.write("Data Found!")
