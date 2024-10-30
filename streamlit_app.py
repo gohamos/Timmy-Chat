@@ -15,7 +15,6 @@ st.markdown(
     """
     Project TIMMY (Transport Incident Master Made for You) is a chatbot created to help the LTA ITSSD Team to query and gain insights from the incident reports database.
 
-    If there are any bugs or issues please contact us at: brandon_ooi@lta.gov.sg
 """
 )
 
