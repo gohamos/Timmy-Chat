@@ -60,7 +60,7 @@ if len(DataList)==0:
         if len(filelist)>0:
            break;
 else:
-    filelist = loadfiles(filelist=DataList,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)   
+    filelist = loadfiles(filelist=DataList,printdebug=0,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)   
 
 ONLINE_LOOKUP_TABLES=os.getenv('ONLINE_LOOKUP_TABLES')
 if len(ONLINE_LOOKUP_TABLES)==0: 
@@ -88,14 +88,7 @@ else:
        if len(DictMap)>0:
            break;
     
-
-print(len(filelist))
-#recordlist=mergingRecords(filelist,printdebug=1)
-#print(len(recordlist))
-
 from langchain.agents import Tool
-
-
 toollist = []
 histlist = []
 exlist = []
@@ -106,7 +99,7 @@ for file in filelist:
         histlist.append(filelist[file])
         
         
-print("pandas_ir_agent:",len(histlist))
+#print("pandas_ir_agent:",len(histlist))
 if len(histlist)>0:
     # Creating tool_agents (From 3rd party)
     pandas_ir_agent = create_pandas_dataframe_agent(
