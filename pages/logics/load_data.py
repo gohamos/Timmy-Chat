@@ -122,9 +122,9 @@ def loadLookup(dir="",filelist=[],subdir=1, filtercols=[], filtertime=1, formatt
                             else:
                                 EwayDict[tEntry.code] = tEntry       
                 else:
-                    if printdebug>0: print("\t\t >> skip",len(df_file.keys()))
-        except:
-            if printdebug>0: print("\t!! cannot read file: ",fullpath)
+                    if printdebug>0: print("\t\t >> skip",len(df_file.keys()))            
+        except Exception as e: 
+            if printdebug>0: print("\t!! cannot read file: ",file,":",e)
     return DictMap,EwayDict;
                                         
     
@@ -181,8 +181,8 @@ def loadfiles(dir="",filelist=[],subdir=1, filtercols=[], filtertime=0, formatti
                     df_file = pd.read_pickle(file)
                     if printdebug>1:  print(df_file.info(), flush = True)
                     lst_df_all[file]=df_file
-            except:
-                if printdebug>0: print("\t!! cannot read file: ",file)
+            except Exception as e: 
+                if printdebug>0: print("\t!! cannot read file: ",file,":",e)
                         
                         
     if reparse>0:

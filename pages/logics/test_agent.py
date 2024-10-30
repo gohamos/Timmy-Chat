@@ -60,7 +60,7 @@ if len(DataList)==0:
         if len(filelist)>0:
            break;
 else:
-    filelist = loadfiles(filelist=DataList,printdebug=0,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)   
+    filelist = loadfiles(filelist=DataList,printdebug=2,subdir=0,reparse=0,filtercols=filterCols,filtertime=0,formattime=0)   
 
 ONLINE_LOOKUP_TABLES=os.getenv('ONLINE_LOOKUP_TABLES')
 if len(ONLINE_LOOKUP_TABLES)==0: 
