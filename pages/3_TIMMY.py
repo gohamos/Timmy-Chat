@@ -40,10 +40,11 @@ with st.chat_message("assistant"):
         st.write("ERROR! Unable to load LLM. Please check on your API environment")
         exit()
     else:    
-        st.write(">> Loading Database......")    
+        st.write("> Loading Database ......")    
         from logics.test_agent import response
         from logics.test_agent import databasesize
         if databasesize()>0:
+            st.write("> Database loaded.")    
             st.write("Hello, how may I help you today?") 
             issetup=1        
         else:

@@ -296,7 +296,7 @@ def response(prompt,printdebug=0):
         clean_prompt=helper_cleanupquery(prompt,printdebug=printdebug)
         is_relevant  =helper_checkrelevance(clean_prompt,printdebug=printdebug)
         if "NO" in is_relevant:
-            result1="!!Please provide a query related to traffic incidents or road conditions in Singapore."
+            result1="!!Please provide a query related to traffic incidents or road conditions in Singapore."+is_relevant.replace("NO","")
         else:            
             system_user_message = f"""You have access to a number of pandas dataframes. These pandas dataframes contain the traffic incident records from Land Transport Authority. \
             the datafranes uses columns with descriptions delimited by the following json enclosed in <column> enclosed tags:
@@ -319,6 +319,8 @@ def response(prompt,printdebug=0):
                 verbose = True
                 print("[] Calling crew",flush = True)
             result1 = run_crew_0(system_user_message,verbose=verbose,datatools=toollist,printdebug=printdebug,llm=llm)
+            if "Agent stopped due to iteration limit or time limit" in result1:
+                result1="!!I'm sorry. Query took too long to complete, please try again later." 
     if printdebug>0:
         PrintResult(prompt,clean_prompt,is_relevant,result1)
 
