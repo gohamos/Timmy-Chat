@@ -11,7 +11,6 @@ print(f"The current working directory is: {os.getcwd()}")
 
 from logics.check_password import check_password
 if not check_password():
-    st.info('Failed login!')
     st.stop()  # Do not continue if check_password is not True.
 
 
