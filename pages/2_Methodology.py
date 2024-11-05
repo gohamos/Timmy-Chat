@@ -3,16 +3,31 @@ import time
 import numpy as np
 import os
 
-# Change the working directory to the current file's directory
+st.set_page_config(page_title="Methodology", page_icon="👨")
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-print(f"The current working directory is: {os.getcwd()}")
 
-st.set_page_config(page_title="About Us", page_icon="👨")
-
-st.markdown("# Methodology")
-st.sidebar.header("Methodology")
-st.write(
-    """Methodology <to-complete>"""
-)
-
-st.image("images/timmy_method.jpg", caption= "Data Flow of the TIMMY app")
+import xmltodict
+contentfile = "content/Method.xml"
+with open(contentfile,mode='r') as f:
+    #print("[] reading file",contentfile,flush=True)
+    try:
+        mycontent=xmltodict.parse(f.read())       
+        for section in mycontent["content"]["sections"]["section"]:
+            if "title" in section:
+                st.title(section["title"])
+                st.sidebar.header(section["title"])
+            if "text" in section:
+                st.write(section["text"])
+            if "tablefile" in section:
+                import pandas as pd
+                tablefile = section["tablefile"]
+                print("reading",tablefile) 
+                stepsdf = pd.read_csv(tablefile)
+                st.table(tablefile)
+            if "image" in section:
+                caption=""                
+                if "caption" in section:
+                    caption = section["caption"]
+                st.image(section["image"], caption= caption)
+    except Exception as e:
+        print("\t!!",e,flush=True)

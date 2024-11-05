@@ -1,0 +1,16 @@
+<content>
+	<sections>
+		<section>
+			<title>Methodology</title>
+			<text>Project Timmy is inmd</text>
+		</section>
+		
+		<section>
+			<image>images/timmy_method.jpg</image>
+			<caption>Data Flow of the TIMMY app</caption>
+		</section>			
+		<section>
+			<tablefile>content/MethodSteps.txt</tablefile>
+		</section>	
+	</sections>
+</content>

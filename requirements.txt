@@ -241,5 +241,6 @@ websocket-client==1.8.0
 websockets==13.0.1
 wrapt==1.16.0
 wsproto==1.2.0
+xmltodict
 yarl==1.11.1
 zipp==3.20.1

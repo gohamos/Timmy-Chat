@@ -1,0 +1,32 @@
+<content>
+	<sections>
+		<section>
+		<title>About Us</title>
+			<text>We are a group of Engineers from LTA ITSSD/AIO (Brandon, Victor and Amos) working with LTA ITSO on a Transport Incidents Database chatbot as part of Govtech AI Champions Bootcamp</text>
+		</section>
+		<section>
+			<title>Problem Statement</title>
+			<text>Gaining access and insights from traffic data, specifically Incident Reports, is currently a manual process that requires considerble time and effort, reliance on third party to extract data, as well as technical knowledge in Excel/Tableau/PowerBI . To gain analytical data from these files, users need to find, extract, cleanse and then ingest the data into Excel or Tableau for analytics and reporting, requiring technical knowledge and taking up to 2 weeks.  In consultation with LTA ITSO, some of the example questions asked by users include:
+			
+	
+	- What is the peak period for incidents recorded created that day?
+	- What are the top 10 incident reords (including roadworks) with the longest duration?
+	- Between 9 and 10 am how many accident records created? 
+
+			</text>
+		</section>
+		<section>
+			<title>Planned Solution</title>
+			<text>Programming an LLM-based Chatbot to allow users to query the incident reports in natural language, and eventually generate draft reports. This removes the technical barrier, reduces the manpower and reduces the amount of time required to gain complex insights from the dataset, indirectly reducing the cost of performing these tasks.
+			</text>
+		</section>
+		<section>
+			<title>Current Status</title>
+			<text>We have created a locally running prototype app with an interface that allows us to query a loaded sample incident record database using natural language. </text>
+		</section>		
+		<section>
+			<title>Future Work</title>
+			<text>TODO </text>
+		</section>
+	</sections>
+</content>
