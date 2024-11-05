@@ -2,15 +2,75 @@
 	<sections>
 		<section>
 			<title>Methodology</title>
-			<text>Project Timmy is inmd</text>
+			<text>Project Timmy was implemented as an Agent based Chatbot powered by Crew AI</text>
+		</section>
+		<section>
+			<title>Data Sources</title>
+			<text>The project team was provided with the following sample data sources:
+			
+	1.Incident Report Master List
+	2.Incident Report Specific Type Details
+	3.Lookup Tables for Interpreting Codes
+
+As CSV files.
+</text>
 		</section>
 		
 		<section>
+			<title>Process Flows</title>
+			<text>The following shows the 2 process flows for the Project Timmy chatbot. 			
+			
+One is a backend process flow for the system admnistrators to help load and cleanup the provided data sources, including translating the lookup tables and removing invalid timestamps, prior to the data being loaded into the chatbot database.
+
+The second process flow is the live activity flow of the chatbot when responding to a user query. </text>
 			<image>images/timmy_method.jpg</image>
 			<caption>Data Flow of the TIMMY app</caption>
 		</section>			
 		<section>
 			<tablefile>content/MethodSteps.txt</tablefile>
 		</section>	
+		
+		
+		<section>
+			<title>Testing and Verification</title>
+			<text>			
+10 test questions were provided by user and propagated into 27 questions by TIMMY team:
+
+	1. Number of Incident Records by Date
+	2. Peak Period of Incidents
+	3. Top 10 Longest Incidents (by Time)
+	4. Top 10 Accident Hotspots
+	5. Number of Incident Records with Conditions by Time
+	6. Location of Congestion Incident Records
+	7. Longest Queue Length
+	8. Average incidents Handled by day, month, year
+	9. Heavy Traffic Recurrence Locations during Peak Hour
+	10. Average time of Resolution
+
+
+Results from the Chatbot were evaluated against direct computation results. 
+
+The chatbot obtained >95% accuracy on simple lookup tasks like question types 1,2,3,5,6,8,10.
+
+Further Logic work is required to handle question types 4,7,9
+
+			
+			</text>
+		</section>
+
+		<section>
+			<title>Next Steps</title>
+			<text>
+
+1. Live demonstration with user
+2. Getting user feedback so that we can fine tune the data retrieval/lookup function
+3. Prioritise the next features/steps together with the users
+
+ </text>
+		</section>
+
 	</sections>
+	
+	
+	
 </content>

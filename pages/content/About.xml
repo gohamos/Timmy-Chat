@@ -9,12 +9,31 @@
 			<text>Gaining access and insights from traffic data, specifically Incident Reports, is currently a manual process that requires considerble time and effort, reliance on third party to extract data, as well as technical knowledge in Excel/Tableau/PowerBI . To gain analytical data from these files, users need to find, extract, cleanse and then ingest the data into Excel or Tableau for analytics and reporting, requiring technical knowledge and taking up to 2 weeks.  In consultation with LTA ITSO, some of the example questions asked by users include:
 			
 	
-	- What is the peak period for incidents recorded created that day?
-	- What are the top 10 incident reords (including roadworks) with the longest duration?
-	- Between 9 and 10 am how many accident records created? 
+	1. What is the number of vehicle breakdown/accidents/roadworks on PIE last month?
+	2. Can you compare the number of incidents on wet and dry roads that happened in December 2023?
+	3. What is the overall duration of an incident in the month of December?
+	4. How much delay was caused by oil spills In 2022?
+
 
 			</text>
 		</section>
+		<section>
+			<title>Objective</title>
+			<text>Automate and streamline the process of gaining insights on incident reports through natural language to remove the current technical barrier and reduce the manpower and time required.</text>
+		</section>
+		<section>
+			<title>Goals</title>
+			<text>
+1. Data retrieval
+2. Calculating ITSO KPIs, including response times, incident resolution times
+3. Making sense of Comments
+4. Generating report or chart template
+</text>
+		</section>
+		
+		
+		
+
 		<section>
 			<title>Planned Solution</title>
 			<text>Programming an LLM-based Chatbot to allow users to query the incident reports in natural language, and eventually generate draft reports. This removes the technical barrier, reduces the manpower and reduces the amount of time required to gain complex insights from the dataset, indirectly reducing the cost of performing these tasks.
@@ -24,9 +43,5 @@
 			<title>Current Status</title>
 			<text>We have created a locally running prototype app with an interface that allows us to query a loaded sample incident record database using natural language. </text>
 		</section>		
-		<section>
-			<title>Future Work</title>
-			<text>TODO </text>
-		</section>
 	</sections>
 </content>

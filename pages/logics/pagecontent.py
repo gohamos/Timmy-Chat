@@ -19,8 +19,8 @@ def pagecontent(contentfile):
                     import pandas as pd
                     tablefile = section["tablefile"]
                     print("reading",tablefile) 
-                    stepsdf = pd.read_csv(tablefile)
-                    st.table(tablefile)
+                    stepsdf = pd.read_csv(tablefile,index_col=None)
+                    st.table(stepsdf)
                 if "image" in section:
                     caption=""                
                     if "caption" in section:

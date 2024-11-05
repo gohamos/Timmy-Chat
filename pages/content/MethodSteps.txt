@@ -4,6 +4,5 @@ Load Records into Tool,Loads database for access by agent tools. May also load o
 Get new User Query,Query and obtain user input from Graphic Interface,Streamlit UI
 Clean User Query,"Correct User Query for language (spelling, grammar)",OpenAI Query
 Check Relevancy of Query to Domain,Check whether User Query is related to Traffic Records domain and return classification,OpenAI Query
-Obtain data insights from Records,"From Traffic Incidents Database and appropriate context (e.g. Column descriptions), retrieve relevant data and infer data insights based on query.","CrewAI Query, "
-,,powered by OpenAI
+Obtain data insights from Records,"From Traffic Incidents Database and appropriate context (e.g. Column descriptions), retrieve relevant data and infer data insights based on query.","CrewAI Query powered by OpenAI"
 Show Result to User,Cleanup results and display to user through Graphic Interface,Streamlit UI
