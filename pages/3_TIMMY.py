@@ -61,9 +61,16 @@ with st.chat_message("assistant"):
             
  
 # React to user input
+persistdebug=0
 if issetup> 0:
     if prompt := st.chat_input("Enter your query here."):
-        printdebug = 0
+        if "<DEBUG ON>" in prompt:
+            persistdebug=2
+            prompt = prompt.replace("<DEBUG ON>","")
+        elif "<DEBUG OFF>" in prompt:
+            persistdebug=0
+            prompt = prompt.replace("<DEBUG OFF>","")
+        printdebug = persistdebug
         if "<DEBUG>" in prompt:
             printdebug=2
             prompt = prompt.replace("<DEBUG>","")
