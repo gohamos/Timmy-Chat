@@ -5,9 +5,7 @@ import os
 from dotenv import load_dotenv
 
 
-
-def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=None):
-    
+def get_crew_0(verbose=True, memory=False, datatools=[], llm=None,max_iter=50,max_execution_time=None):
     if llm is not None:
         print("Use arg LLM")
         agent_data_analyst = Agent(
@@ -19,8 +17,8 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
             allow_delegation=True,
             verbose=verbose,
             tools=datatools, #<--- This is the line that includes the tool
-            max_iter=10,  # Increase the iteration limit
-            max_execution_time=None
+            max_iter=max_iter, 
+            max_execution_time=max_execution_time
         )
     else:
         print("Use internal LLM")
@@ -32,8 +30,8 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
             allow_delegation=True,
             verbose=verbose,
             tools=datatools, #<--- This is the line that includes the tool
-            max_iter=10,  # Increase the iteration limit
-            max_execution_time=None
+            max_iter=max_iter,  
+            max_execution_time=max_execution_time
         )
    
 
@@ -43,7 +41,7 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
         description="""\
             1. Understand the user query: {topic}.
             2. Breakdown the query into subtasks
-            3. Use the tool to search the data based on the user query.
+            3. Use the tool to search the data based on the user query. Sometimes no matched records are to be expected.
             4. Derive additional data where required.
             5. Analyse significant insights, trends, patterns if required.""",
 
@@ -56,7 +54,7 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
    
 
     # Creating the Crew
-    crew = Crew(
+    return Crew(
         agents=[ agent_data_analyst],
         tasks=[ task_analyze],
         verbose=verbose,
@@ -64,6 +62,8 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
         
     )
 
+
+def run_crew(topic,crew,printdebug=1):
     # Running the Crew
     result = crew.kickoff(inputs={"topic": f"""{topic}"""})
     if printdebug==1:
@@ -80,6 +80,10 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
         print("-----------------------------------------\n\n")
 
     return result.raw
+
+def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=None,max_iter=50,max_execution_time=None):
+    crew = get_crew_0(verbose=verbose,memory=memory,llm=llm,max_iter=max_iter,max_execution_time=max_execution_time)
+    return run_crew(topic=topic,crew=crew,printdebug=printdebug)
     
 
 def run_crew_0b(topic,verbose=True, memory=False,printdebug=0, datatools=[], llm=None):
@@ -138,18 +142,7 @@ def run_crew_0b(topic,verbose=True, memory=False,printdebug=0, datatools=[], llm
         verbose=verbose,
         memory=memory
     )
-
-    # Running the Crew
-    result = crew.kickoff(inputs={"topic": f"""{topic}"""})
-    if printdebug>0:
-        print(f"Raw Output: {result.raw}")
-        print("-----------------------------------------\n\n")
-        print(f"Token Usage: {result.token_usage}")
-        print("-----------------------------------------\n\n")
-        print(f"Tasks Output of Task 1: {result.tasks_output[0]}")
-        print("-----------------------------------------\n\n")
-
-    return result.raw
+    return run_crew(topic=topic,crew=crew,printdebug=printdebug)
     
     
 def run_crew_1(topic,verbose=True, memory=False, datatools=[], llm=None):
@@ -201,18 +194,4 @@ def run_crew_1(topic,verbose=True, memory=False, datatools=[], llm=None):
         verbose=verbose,
         memory=False
     )
-
-    # Running the Crew
-    result = crew.kickoff(inputs={"topic": f"{topic}"})
-
-    
-
-    if printdebug>0:
-        print(f"Raw Output: {result.raw}")
-        print("-----------------------------------------\n\n")
-        print(f"Token Usage: {result.token_usage}")
-        print("-----------------------------------------\n\n")
-        print(f"Tasks Output of Task 1: {result.tasks_output[0]}")
-        print("-----------------------------------------\n\n")
-
-    return result.raw
+    return run_crew(topic=topic,crew=crew,printdebug=printdebug)
