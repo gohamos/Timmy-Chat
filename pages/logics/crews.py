@@ -19,7 +19,8 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
             allow_delegation=True,
             verbose=verbose,
             tools=datatools, #<--- This is the line that includes the tool
-            max_iter=30,  # Increase the iteration limit
+            max_iter=10,  # Increase the iteration limit
+            max_execution_time=None
         )
     else:
         print("Use internal LLM")
@@ -31,7 +32,8 @@ def run_crew_0(topic,verbose=True, memory=False,printdebug=1, datatools=[], llm=
             allow_delegation=True,
             verbose=verbose,
             tools=datatools, #<--- This is the line that includes the tool
-            max_iter=30,  # Increase the iteration limit
+            max_iter=10,  # Increase the iteration limit
+            max_execution_time=None
         )
    
 
