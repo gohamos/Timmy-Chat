@@ -318,7 +318,7 @@ def response(prompt,printdebug=0):
 
             Question: <text>{clean_prompt}</text>"""
             if printdebug>0:
-                print("[] Calling crew",flush = True") 
+                print("[] Calling crew",flush = True) 
             result1 = run_crew(topic=system_user_message,crew=my_crew,printdebug=printdebug)
             if "Agent stopped due to iteration limit or time limit" in result1:
                 result1="!!I'm sorry. Query took too long to complete, please try again later." 
