@@ -121,8 +121,7 @@ print("[]  Data Loading DONE", flush=True)
 from crews import run_crew_0
 from crews import get_crew_0
 from crews import run_crew
-verbose_crew = get_crew_0(verbose=True,datatools=toollist,llm=llm)
-silent_crew = get_crew_0(verbose=False,datatools=toollist,llm=llm)
+my_crew = get_crew_0(verbose=True,datatools=toollist,llm=llm)
 print("[]  Generated Crews", flush=True)
 
    
@@ -318,11 +317,9 @@ def response(prompt,printdebug=0):
             Make sure to refer only to the dataframes mentioned above. 
 
             Question: <text>{clean_prompt}</text>"""
-            maincrew=silent_crew
             if printdebug>0:
-                print("[] Calling crew",flush = True)
-                maincrew=verbose_crew                
-            result1 = run_crew(topic=system_user_message,crew=maincrew,printdebug=printdebug)
+                print("[] Calling crew",flush = True) 
+            result1 = run_crew(topic=system_user_message,crew=my_crew,printdebug=printdebug)
             if "Agent stopped due to iteration limit or time limit" in result1:
                 result1="!!I'm sorry. Query took too long to complete, please try again later." 
     if printdebug>0:
