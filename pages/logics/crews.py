@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 
-def get_crew_0(verbose=True, memory=False, datatools=[], llm=None,max_iter=50,max_execution_time=None):
+def get_crew_0(verbose=True, memory=False, datatools=[], llm=None,max_iter=25,max_execution_time=None):
     if llm is not None:
         print("Use arg LLM")
         agent_data_analyst = Agent(
@@ -42,17 +42,18 @@ def get_crew_0(verbose=True, memory=False, datatools=[], llm=None,max_iter=50,ma
             1. Understand the user query: {topic}.
             2. Breakdown the query into subtasks
             3. Use the tool to search the data based on the user query. Sometimes no matched records are to be expected.
-            4. Derive additional data where required.
-            5. Analyse significant insights, trends, patterns if required.""",
+            4. Do not use more than 10 iterations for a single data query, otherwise stop and use best effort results 
+            5. Derive additional data where required.
+            6. Analyse significant insights, trends, patterns if required.
+            
+            Ensure data in database is NOT modified in this task""",
 
         expected_output="""\
         Present the results with relevant data based on the user query""",
 
         agent=agent_data_analyst,
     )
-
-   
-
+    
     # Creating the Crew
     return Crew(
         agents=[ agent_data_analyst],
