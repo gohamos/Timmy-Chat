@@ -118,7 +118,6 @@ if len(histlist)>0:
     toollist.append(pandas_ir_tool)
 
 print("[]  Data Loading DONE", flush=True)
-from crews import run_crew_0
 from crews import get_crew_0
 from crews import run_crew
 my_crew = get_crew_0(verbose=True,datatools=toollist,llm=llm)
@@ -213,14 +212,7 @@ def helper_cleanupquery(user_message, printdebug = 0):
     system_message = f"""
     When given a user message as input (delimited by \
     <incoming-massage> tags), check for spelling errors and grammatical mistakes and return a corrected query in proper English.
-     
-    Only if it is a query on a date, it will be in day-month-year format, that is to mean that 1/3/2022 is the 1st of March 2022, not the 3rd of January 2022.
-    Check if it is a valid date in dd/mm/yyyy format. If not valid, then return "invalid date".
-    Add "has a start date of <date>" to the query, replacing the original date in the query in a comprehensible and cohesive way
-    If it has a range, include both dates from the first date 00:00 to the last date 23:59 unless otherwise stated.
-    For example: How many incidents on 24/11/22? -> How many incidents have a start date of 24 November 2022?
-    Another example: How many incidents from 24/11/22 - 26/11/22 -> How many incidents have a start date of 24 November 2022 00:00 to 26 November 2022 23:59?
-    Another example: How many incidents in June 2024 -> How many incidents have a start date of 1 June 2024 00:00 to 30 June 2024 23:59?
+
     """
 
     system_message = f"""
@@ -302,17 +294,12 @@ def response(prompt,printdebug=0):
             result1="!!Please provide a query related to traffic incidents or road conditions in Singapore."+is_relevant.replace("NO","")
         else:            
             system_user_message = f"""You have access to a number of pandas dataframes. These pandas dataframes contain the traffic incident records from Land Transport Authority. \
-            the datafranes uses columns with descriptions delimited by the following json enclosed in <column> enclosed tags:
+            the dataframes uses columns with descriptions delimited by the following json enclosed in <column> enclosed tags:
             <columns>{columns_description}</columns>    
 
             All Date and Time based data queries and responses MUST be in Day/Month/Year hours:minutes format
             Use the DATE(START_TIME) as the reference point for Date and Time queries.
-
-            Understand the question delimited by a pair of <text> enclosed and search the dataframes for relevant data within the provided context and give an accurate answer.
-            Understand whether the question delimited by a pair of <text> enclosed is referring to all incidents or a specific type of incident. If it is a specific type of incident, please filter for that type of incident. Capitalize the first letter and leave the rest lowercase, example: "Apple", "Pear".
-            Understand if the question delimited by a pair of <text> enclosed is referring to a particular road name and filter for that road name if it is required.
-            Understand if the question delimited by a pair of <text> enclosed is referring to a particular time range and filter for the full time duration. (e.g. Days should filtered by 0:00 to 23:59 of that particular day, Months and Years should be 0:00 of the first day and 23:59 of the last day.)
-            Use all the filters together using code if necessary.
+ry.
             Don't assume you have access to any libraries other than built-in Python ones and pandas. \
             Make sure to refer only to the dataframes mentioned above. 
 
